@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programs Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #141417;
+    --surface2: #1c1c22;
+    --border: #2a2a33;
+    --border2: #3a3a46;
+    --text: #e8e8f0;
+    --muted: #7a7a8c;
+    --accent-py: #4ade80;
+    --accent-java: #fb923c;
+    --accent-purple: #a78bfa;
+    --kw: #c084fc;
+    --fn: #60a5fa;
+    --st: #4ade80;
+    --nm: #fb923c;
+    --cm: #555566;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── header ── */
+  header {
+    padding: 3rem 4rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .logo {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+  h1 span { color: var(--accent-purple); }
+  .header-meta {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ── main layout ── */
+  main { padding: 2.5rem 4rem 4rem; }
+
+  /* ── tabs ── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    width: fit-content;
+  }
+  .tab {
+    padding: 10px 24px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab:last-child { border-right: none; }
+  .tab:hover { background: var(--surface2); color: var(--text); }
+  .tab.active { background: var(--surface2); color: var(--text); }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-py  { background: var(--accent-py); }
+  .dot-java{ background: var(--accent-java); }
+
+  /* ── card ── */
+  .card { display: none; }
+  .card.active { display: block; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+  }
+  .card-header-left { display: flex; align-items: center; gap: 14px; }
+  .lang-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .badge-py   { background: rgba(74,222,128,0.12); color: var(--accent-py);   border: 1px solid rgba(74,222,128,0.25); }
+  .badge-java { background: rgba(251,146,60,0.12);  color: var(--accent-java); border: 1px solid rgba(251,146,60,0.25); }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .card-desc  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .window-dots { display: flex; gap: 6px; }
+  .wd { width: 10px; height: 10px; border-radius: 50%; }
+  .wd-r { background: #ff5f57; }
+  .wd-y { background: #febc2e; }
+  .wd-g { background: #28c840; }
+
+  /* ── code block ── */
+  .code-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0 0 12px 12px;
+    overflow-x: auto;
+  }
+  .line-nums-wrap {
+    display: flex;
+  }
+  .line-nums {
+    padding: 1.25rem 0.75rem 1.25rem 1rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.75;
+    color: var(--border2);
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid var(--border);
+    min-width: 48px;
+  }
+  pre {
+    padding: 1.25rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--text);
+    white-space: pre;
+    flex: 1;
+  }
+
+  /* ── syntax colors ── */
+  .kw { color: var(--kw); }
+  .cm { color: var(--cm); font-style: italic; }
+  .st { color: var(--st); }
+  .fn { color: var(--fn); }
+  .nm { color: var(--nm); }
+
+  /* ── footer ── */
+  footer {
+    padding: 1.5rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 2rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+    h1 { font-size: 2rem; }
+    main { padding: 1.5rem 1.25rem 3rem; }
+    footer { padding: 1rem 1.25rem; flex-direction: column; gap: 8px; text-align: center; }
+    .tabs { flex-direction: column; width: 100%; }
+    .tab { border-right: none; border-bottom: 1px solid var(--border); }
+    .tab:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Programs Showcase</div>
+    <h1>Code <span>Library</span></h1>
+  </div>
+  <div class="header-meta">
+    3 Programs &nbsp;·&nbsp; Python &amp; Java<br>
+    ML &nbsp;·&nbsp; Data Structures
+  </div>
+</header>
+
+<main>
+  <div class="tabs">
+    <button class="tab active" onclick="show(0)">
+      <span class="dot dot-py"></span> DBSCAN Clustering
+    </button>
+    <button class="tab" onclick="show(1)">
+      <span class="dot dot-java"></span> Circular Linked List
+    </button>
+    <button class="tab" onclick="show(2)">
+      <span class="dot dot-java"></span> Singly Linked List
+    </button>
+  </div>
+
+  <!-- DBSCAN -->
+  <div class="card active" id="c0">
+    <div class="card-header">
+      <div class="card-header-left">
+        <span class="lang-badge badge-py">Python</span>
+        <div>
+          <div class="card-title">DBSCAN Clustering</div>
+          <div class="card-desc">Density-based clustering on sales data using sklearn</div>
+        </div>
+      </div>
+      <div class="window-dots">
+        <div class="wd wd-r"></div><div class="wd wd-y"></div><div class="wd wd-g"></div>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="line-nums-wrap">
+        <div class="line-nums" id="ln0"></div>
+        <pre id="pre0"><span class="cm"># Step 1: Import Libraries</span>
+<span class="kw">from</span> sklearn.cluster <span class="kw">import</span> DBSCAN
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+
+<span class="cm"># Step 2: Load Dataset</span>
+mydf = pd.<span class="fn">read_csv</span>(<span class="st">"D:/sales.csv"</span>)
+<span class="fn">print</span>(mydf)
+
+<span class="cm"># Step 3: Convert columns into X</span>
+X = mydf[[<span class="st">"annual_income"</span>, <span class="st">"spending_score"</span>]]
+<span class="fn">print</span>(X)
+
+<span class="cm"># Step 4: Scale your data using StandardScaler</span>
+X_scaled = <span class="fn">StandardScaler</span>().<span class="fn">fit_transform</span>(X)
+
+<span class="cm"># Step 5: Print scaled data</span>
+<span class="fn">print</span>(X_scaled)
+
+<span class="cm"># Step 6: Apply DBSCAN algorithm</span>
+model = <span class="fn">DBSCAN</span>(eps=<span class="nm">0.5</span>)
+model.<span class="fn">fit</span>(X_scaled)
+
+<span class="cm"># Step 7: Find Labels</span>
+labels = model.<span class="fn">fit_predict</span>(X_scaled)
+
+<span class="cm"># Step 8: Print Labels and store into DataFrame</span>
+<span class="fn">print</span>(labels)
+mydf[<span class="st">'cluster'</span>] = labels
+
+<span class="cm"># Step 9: Plot clusters in scatter plot</span>
+plt.<span class="fn">scatter</span>(mydf[<span class="st">'annual_income'</span>], mydf[<span class="st">'spending_score'</span>], c=mydf[<span class="st">'cluster'</span>], cmap=<span class="st">'viridis'</span>)
+plt.<span class="fn">xlabel</span>(<span class="st">"Annual Income"</span>)
+plt.<span class="fn">ylabel</span>(<span class="st">"Spending Score"</span>)
+plt.<span class="fn">title</span>(<span class="st">"DBSCAN Clustering"</span>)
+plt.<span class="fn">colorbar</span>(label=<span class="st">'Cluster'</span>)
+plt.<span class="fn">show</span>()</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLL -->
+  <div class="card" id="c1">
+    <div class="card-header">
+      <div class="card-header-left">
+        <span class="lang-badge badge-java">Java</span>
+        <div>
+          <div class="card-title">Circular Linked List (CLL)</div>
+          <div class="card-desc">Create, display, insert and delete nodes in a circular linked list</div>
+        </div>
+      </div>
+      <div class="window-dots">
+        <div class="wd wd-r"></div><div class="wd wd-y"></div><div class="wd wd-g"></div>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="line-nums-wrap">
+        <div class="line-nums" id="ln1"></div>
+        <pre id="pre1"><span class="kw">import</span> java.util.*;
+
+<span class="kw">class</span> <span class="fn">Node</span> {
+    <span class="kw">int</span> data;
+    Node next;
+    <span class="fn">Node</span>(<span class="kw">int</span> ele) {
+        data = ele;
+        next = <span class="kw">null</span>;
+    }
+}
+
+<span class="kw">class</span> <span class="fn">cll</span> {
+    Node first = <span class="kw">null</span>;
+    Node last  = <span class="kw">null</span>;
+
+    <span class="kw">public void</span> <span class="fn">create_cll</span>() {
+        <span class="kw">int</span> ele; <span class="kw">char</span> ans;
+        Scanner ob3 = <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+        <span class="kw">do</span> {
+            System.out.<span class="fn">print</span>(<span class="st">"Enter Element: "</span>);
+            ele = ob3.<span class="fn">nextInt</span>();
+            Node newnode = <span class="kw">new</span> <span class="fn">Node</span>(ele);
+            <span class="kw">if</span> (first == <span class="kw">null</span>) first = newnode;
+            <span class="kw">else</span> last.next = newnode;
+            last = newnode;
+            last.next = first;  <span class="cm">// CIRCULAR: last always points to first</span>
+            System.out.<span class="fn">print</span>(<span class="st">"Continue? (y): "</span>);
+            ans = ob3.<span class="fn">next</span>().<span class="fn">charAt</span>(<span class="nm">0</span>);
+        } <span class="kw">while</span> (ans == <span class="st">'y'</span>);
+    }
+
+    <span class="kw">public void</span> <span class="fn">display</span>() {
+        Node q = first;
+        <span class="kw">if</span> (first == <span class="kw">null</span>) <span class="kw">return</span>;
+        <span class="kw">do</span> {
+            System.out.<span class="fn">print</span>(q.data + <span class="st">"\t"</span>);
+            q = q.next;
+        } <span class="kw">while</span> (q != first);  <span class="cm">// CIRCULAR: stop when back at first</span>
+        System.out.<span class="fn">println</span>();
+    }
+
+    <span class="kw">public void</span> <span class="fn">insert_pos</span>() {
+        Scanner ob3 = <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+        System.out.<span class="fn">print</span>(<span class="st">"Enter Position: "</span>); <span class="kw">int</span> p = ob3.<span class="fn">nextInt</span>();
+        System.out.<span class="fn">print</span>(<span class="st">"Enter Element: "</span>);  <span class="kw">int</span> ele = ob3.<span class="fn">nextInt</span>();
+        Node newnode = <span class="kw">new</span> <span class="fn">Node</span>(ele);
+        <span class="kw">if</span> (p == <span class="nm">1</span>) {
+            newnode.next = first; first = newnode; last.next = first;
+        } <span class="kw">else</span> {
+            Node q = first; <span class="kw">int</span> i = <span class="nm">1</span>;
+            <span class="kw">while</span> (q.next != first &amp;&amp; i &lt;= p - <span class="nm">2</span>) { q = q.next; i++; }
+            newnode.next = q.next; q.next = newnode;
+            <span class="kw">if</span> (newnode.next == first) last = newnode;
+        }
+    }
+
+    <span class="kw">public void</span> <span class="fn">delete_pos</span>() {
+        Scanner ob3 = <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+        System.out.<span class="fn">print</span>(<span class="st">"Enter Position: "</span>); <span class="kw">int</span> p = ob3.<span class="fn">nextInt</span>();
+        <span class="kw">if</span> (p == <span class="nm">1</span>) {
+            first = first.next; last.next = first;
+        } <span class="kw">else</span> {
+            Node q = first; <span class="kw">int</span> i = <span class="nm">1</span>;
+            <span class="kw">while</span> (q.next != first &amp;&amp; i &lt;= p - <span class="nm">2</span>) { q = q.next; i++; }
+            Node temp = q.next; q.next = temp.next;
+            <span class="kw">if</span> (q.next == first) last = q;
+        }
+    }
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+        Scanner ob1 = <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+        cll ob2 = <span class="kw">new</span> <span class="fn">cll</span>(); <span class="kw">int</span> ch;
+        <span class="kw">do</span> {
+            System.out.<span class="fn">println</span>(<span class="st">"1. Create  2. Display  3. Insert  4. Delete  5. Exit"</span>);
+            System.out.<span class="fn">print</span>(<span class="st">"Choice: "</span>); ch = ob1.<span class="fn">nextInt</span>();
+            <span class="kw">switch</span> (ch) {
+                <span class="kw">case</span> <span class="nm">1</span>: ob2.<span class="fn">create_cll</span>(); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nm">2</span>: ob2.<span class="fn">display</span>();    <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nm">3</span>: ob2.<span class="fn">insert_pos</span>(); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nm">4</span>: ob2.<span class="fn">delete_pos</span>(); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nm">5</span>: System.out.<span class="fn">println</span>(<span class="st">"Bye bye"</span>); <span class="kw">break</span>;
+            }
+        } <span class="kw">while</span> (ch != <span class="nm">5</span>);
+    }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLL -->
+  <div class="card" id="c2">
+    <div class="card-header">
+      <div class="card-header-left">
+        <span class="lang-badge badge-java">Java</span>
+        <div>
+          <div class="card-title">Singly Linked List (SLL)</div>
+          <div class="card-desc">Create, display, insert and delete nodes in a singly linked list</div>
+        </div>
+      </div>
+      <div class="window-dots">
+        <div class="wd wd-r"></div><div class="wd wd-y"></div><div class="wd wd-g"></div>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="line-nums-wrap">
+        <div class="line-nums" id="ln2"></div>
+        <pre id="pre2"><span class="kw">import</span> java.util.*;
+
+<span class="kw">class</span> <span class="fn">Node</span> {
+    <span class="kw">int</span> data;
+    Node next;
+    <span class="fn">Node</span>(<span class="kw">int</span> ele) {
+        data = ele;
+        next = <span class="kw">null</span>;
+    }
+}
+
+<span class="kw">class</span> <span class="fn">sll</span> {
+    Node first = <span class="kw">null</span>;
+    Node last  = <span class="kw">null</span>;
+
+    <span class="kw">public void</span> <span class="fn">create_sll</span>() {
+        <span class="kw">int</span> ele; <span class="kw">char</span> ans;
+        Scanner ob3 = <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+        <span class="kw">do</span> {
+            System.out.<span class="fn">print</span>(<span class="st">"Enter Element: "</span>);
+            ele = ob3.<span class="fn">nextInt</span>();
+            Node newnode = <span class="kw">new</span> <span class="fn">Node</span>(ele);
+            <span class="kw">if</span> (first == <span class="kw">null</span>) first = newnode;
+            <span class="kw">else</span> last.next = newnode;
+            last = newnode;
+            System.out.<span class="fn">print</span>(<span class="st">"Continue? (y): "</span>);
+            ans = ob3.<span class="fn">next</span>().<span class="fn">charAt</span>(<span class="nm">0</span>);
+        } <span class="kw">while</span> (ans == <span class="st">'y'</span>);
+    }
+
+    <span class="kw">public void</span> <span class="fn">display</span>() {
+        Node q = first;
+        <span class="kw">while</span> (q != <span class="kw">null</span>) {
+            System.out.<span class="fn">print</span>(q.data + <span class="st">"\t"</span>);
+            q = q.next;
+        }
+        System.out.<span class="fn">println</span>();
+    }
+
+    <span class="kw">public void</span> <span class="fn">insert_pos</span>() {
+        Scanner ob3 = <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+        System.out.<span class="fn">print</span>(<span class="st">"Enter Position: "</span>); <span class="kw">int</span> p = ob3.<span class="fn">nextInt</span>();
+        System.out.<span class="fn">print</span>(<span class="st">"Enter Element: "</span>);  <span class="kw">int</span> ele = ob3.<span class="fn">nextInt</span>();
+        Node newnode = <span class="kw">new</span> <span class="fn">Node</span>(ele);
+        <span class="kw">if</span> (p == <span class="nm">1</span>) {
+            newnode.next = first; first = newnode;
+        } <span class="kw">else</span> {
+            Node q = first; <span class="kw">int</span> i = <span class="nm">1</span>;
+            <span class="kw">while</span> (q.next != <span class="kw">null</span> &amp;&amp; i &lt;= p - <span class="nm">2</span>) { q = q.next; i++; }
+            newnode.next = q.next; q.next = newnode;
+            <span class="kw">if</span> (newnode.next == <span class="kw">null</span>) last = newnode;
+        }
+    }
+
+    <span class="kw">public void</span> <span class="fn">delete_pos</span>() {
+        Scanner ob3 = <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+        System.out.<span class="fn">print</span>(<span class="st">"Enter Position: "</span>); <span class="kw">int</span> p = ob3.<span class="fn">nextInt</span>();
+        <span class="kw">if</span> (p == <span class="nm">1</span>) {
+            first = first.next;
+        } <span class="kw">else</span> {
+            Node q = first; <span class="kw">int</span> i = <span class="nm">1</span>;
+            <span class="kw">while</span> (q.next != <span class="kw">null</span> &amp;&amp; i &lt;= p - <span class="nm">2</span>) { q = q.next; i++; }
+            Node temp = q.next; q.next = temp.next;
+            <span class="kw">if</span> (q.next == <span class="kw">null</span>) last = q;
+        }
+    }
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+        Scanner ob1 = <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+        sll ob2 = <span class="kw">new</span> <span class="fn">sll</span>(); <span class="kw">int</span> ch;
+        <span class="kw">do</span> {
+            System.out.<span class="fn">println</span>(<span class="st">"1. Create  2. Display  3. Insert  4. Delete  5. Exit"</span>);
+            System.out.<span class="fn">print</span>(<span class="st">"Choice: "</span>); ch = ob1.<span class="fn">nextInt</span>();
+            <span class="kw">switch</span> (ch) {
+                <span class="kw">case</span> <span class="nm">1</span>: ob2.<span class="fn">create_sll</span>(); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nm">2</span>: ob2.<span class="fn">display</span>();    <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nm">3</span>: ob2.<span class="fn">insert_pos</span>(); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nm">4</span>: ob2.<span class="fn">delete_pos</span>(); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nm">5</span>: System.out.<span class="fn">println</span>(<span class="st">"Bye bye"</span>); <span class="kw">break</span>;
+            }
+        } <span class="kw">while</span> (ch != <span class="nm">5</span>);
+    }
+}</pre>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>3 Programs &nbsp;·&nbsp; Python &amp; Java</span>
+  <span>ML &nbsp;·&nbsp; Data Structures</span>
+</footer>
+
+<script>
+  function show(i) {
+    document.querySelectorAll('.tab').forEach((t, j) => t.classList.toggle('active', i === j));
+    document.querySelectorAll('.card').forEach((c, j) => c.classList.toggle('active', i === j));
+    addLineNumbers(i);
+  }
+
+  function addLineNumbers(i) {
+    const pre = document.getElementById('pre' + i);
+    const ln  = document.getElementById('ln' + i);
+    if (!pre || !ln || ln.dataset.done) return;
+    const lines = pre.innerText.split('\n').length;
+    ln.innerHTML = Array.from({length: lines}, (_, k) => k + 1).join('\n');
+    ln.dataset.done = '1';
+  }
+
+  addLineNumbers(0);
+</script>
+</body>
+</html>
